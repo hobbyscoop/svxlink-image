@@ -42,7 +42,7 @@ jobs:
           push: false
           load: true
           tags: build-package:latest
-          file: svxlink/docker/ubuntu-build/Dockerfile.build
+          file: Dockerfile.build
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -51,7 +51,7 @@ jobs:
         with:
           push: true
           tags: ghcr.io/hobbyscoop/svxlink:latest
-          file: svxlink/docker/ubuntu-build/Dockerfile.final
+          file: Dockerfile.final
           platforms: linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
