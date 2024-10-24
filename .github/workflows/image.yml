@@ -38,7 +38,7 @@ jobs:
 
       - name: Build svxlink
         run: |
-          docker run --rm -v $PWD:/build -w /build --platform linux/arm64 --entrypoint /bin/bash builder-image -c "apt update; apt install -y libssl-dev; /home/svxlink/build-svxlink.sh"
+          docker run --rm -v $PWD:/build -w /build --platform linux/arm64 --entrypoint sudo builder-image /bin/bash -c "apt update; apt install -y libssl-dev; /home/svxlink/build-svxlink.sh"
 
       - name: Build final image
         uses: docker/build-push-action@v6
