@@ -23,10 +23,30 @@ jobs:
       - name: Fetch svxlink
         run: |
           git clone https://github.com/sm0svx/svxlink.git
+
       - name: Build builder image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          load: true
+          tags: builder-image:latest
+          context: svxlink/docker/ubuntu-build/
+          platforms:
+            - linux/arm64
+          file: svxlink/docker/ubuntu-build/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build svxlink
         run: |
-          docker buildx build --load --platform linux/arm64 -f svxlink/docker/ubuntu-build/Dockerfile -t builder-image svxlink/docker/ubuntu-build/
           docker run -v $PWD:/build -w /build --platform linux/arm64 builder-image /home/svxlink/build-svxlink.sh
+
       - name: Build final image
-        run: |
-          docker buildx build --platform linux/arm64 -t ghcr.io/hobbyscoop/svxlink:latest .
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/hobbyscoop/svxlink:latest
+          platforms:
+            - linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
