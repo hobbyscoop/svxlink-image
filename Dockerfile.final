@@ -1,0 +1,4 @@
+FROM ubuntu:latest
+ADD *.deb /
+RUN dpkg -i /*.deb
+RUN apt-get update && apt-get install -f -y

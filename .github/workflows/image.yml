@@ -37,14 +37,21 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build svxlink
-        run: |
-          docker run -v $PWD:/build -w /build --platform linux/arm64 builder-image /home/svxlink/build-svxlink.sh
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          load: true
+          tags: build-package:latest
+          file: svxlink/docker/ubuntu-build/Dockerfile.build
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Build final image
         uses: docker/build-push-action@v6
         with:
           push: true
           tags: ghcr.io/hobbyscoop/svxlink:latest
+          file: svxlink/docker/ubuntu-build/Dockerfile.final
           platforms: linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
