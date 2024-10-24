@@ -31,8 +31,7 @@ jobs:
           load: true
           tags: builder-image:latest
           context: svxlink/docker/ubuntu-build/
-          platforms:
-            - linux/arm64
+          platforms: linux/arm64
           file: svxlink/docker/ubuntu-build/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
