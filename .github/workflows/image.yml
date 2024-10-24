@@ -26,7 +26,7 @@ jobs:
       - name: Build builder image
         run: |
           docker buildx build --platform linux/arm64 -f svxlink/docker/ubuntu-build/Dockerfile -t builder-image svxlink/docker/ubuntu-build/
-          docker run -ti -v $PWD:/build -w /build --platform linux/arm64 builder-image /home/svxlink/build-svxlink.sh
+          docker run -v $PWD:/build -w /build --platform linux/arm64 builder-image /home/svxlink/build-svxlink.sh
       - name: Build final image
         run: |
           docker buildx build --platform linux/arm64 -t ghcr.io/hobbyscoop/svxlink:latest .
