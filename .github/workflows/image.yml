@@ -27,20 +27,20 @@ jobs:
       - name: Build builder image
         uses: docker/build-push-action@v6
         with:
-          push: false
+          push: true
           load: true
-          tags: builder-image:latest
+          tags: ghcr.io/hobbyscoop/svxlink-builder-image:latest
           context: svxlink/docker/ubuntu-build/
           platforms: linux/arm64
           file: svxlink/docker/ubuntu-build/Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache
+          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache,mode=max
 
       - name: Build svxlink
         run: |
-          ls -ltr *.deb
-          find . -name "*.deb"
-          docker run --rm -v $PWD:/build --platform linux/arm64 --entrypoint sudo builder-image /bin/bash -c "apt update; apt install -y libssl-dev; GIT_URL=https://github.com/sm0svx/svxlink /home/svxlink/build-svxlink.sh; cp /root/build/*.deb /build"
+          docker run --rm -v $PWD:/build --platform linux/arm64 --entrypoint sudo ghcr.io/hobbyscoop/svxlink-builder-image:latest /bin/bash -c "apt update; apt install -y libssl-dev; GIT_URL=https://github.com/sm0svx/svxlink /home/svxlink/build-svxlink.sh; cp /root/build/*.deb /build"
+          ls -ltr *.deb || true
+          find . -name "*.deb" || true
 
       - name: Build final image
         uses: docker/build-push-action@v6
@@ -49,5 +49,5 @@ jobs:
           tags: ghcr.io/hobbyscoop/svxlink:latest
           file: Dockerfile.final
           platforms: linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache
+          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache,mode=max
