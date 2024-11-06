@@ -1,3 +1,4 @@
 FROM ghcr.io/hobbyscoop/svxlink-builder-image:latest
+ARG GIT_BRANCH=master
 RUN sudo apt update && sudo apt install -y libssl-dev # https://github.com/sm0svx/svxlink/pull/682
 RUN /home/svxlink/build-svxlink.sh

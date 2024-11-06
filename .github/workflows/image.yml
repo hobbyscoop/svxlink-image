@@ -44,34 +44,17 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache,mode=max
 
-      - name: Checkout tag
-        run: |
-          cd svxlink
-          git checkout ${{ inputs.git_hash }}
-
       - name: Build svxlink
         uses: docker/build-push-action@v6
         with:
           push: true
           load: true
-          tags: ghcr.io/hobbyscoop/svxlink-build:${{ inputs.docker_tag }}
+          tags: ghcr.io/hobbyscoop/svxlink:${{ inputs.docker_tag }}
+          build-args: |
+             GIT_BRANCH=${{ inputs.git_hash }}
           context: .
           platforms: linux/arm64
           file: Dockerfile.build
-          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-build:buildcache-${{ inputs.docker_tag }}
-          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-build:buildcache-${{ inputs.docker_tag }},mode=max
-
-      - name: Get package svxlink
-        run: |
-          docker run --rm -v $PWD:/build --platform linux/arm64 --entrypoint /bin/bash ghcr.io/hobbyscoop/svxlink-build:latest -c "cp build/*.deb /build"
-
-      - name: Build final image
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: ghcr.io/hobbyscoop/svxlink:${{ inputs.docker_tag }}
-          file: Dockerfile.final
-          context: .
-          platforms: linux/arm64
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }}
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }},mode=max
+
