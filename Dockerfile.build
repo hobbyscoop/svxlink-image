@@ -1,4 +1,25 @@
 FROM ghcr.io/hobbyscoop/svxlink-builder-image:latest
 ARG GIT_BRANCH=master
+ENV GIT_BRANCH=$GIT_BRANCH
+ADD svxlink /home/svxlink/svxlink
+RUN sudo chown -R svxlink: /home/svxlink/svxlink
+RUN (cd svxlink; git checkout $GIT_BRANCH; git tag $GIT_BRANCH; git branch origin/$GIT_BRANCH) # the build script tries a reset to this branch, but we want a commit has to work as well
 RUN sudo apt update && sudo apt install -y libssl-dev # https://github.com/sm0svx/svxlink/pull/682
-RUN /home/svxlink/build-svxlink.sh
+#RUN /home/svxlink/build-svxlink.sh
+
+# the build script is broken. It tries to find the git tag in the build/ folder, instead of the git tree.
+# so we override the package_version instead
+RUN mkdir build
+WORKDIR build
+RUN cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+      -DCMAKE_INSTALL_LOCALSTATEDIR=/var \
+      -DCPACK_GENERATOR=DEB \
+      -DCPACK_DEBIAN_PACKAGE_VERSION=$GIT_BRANCH \
+      -DCMAKE_BUILD_TYPE=Release \
+      ../svxlink/src
+RUN make -j2
+RUN rm -f *.deb
+RUN make package
+RUN sudo dpkg -i *.deb
+
