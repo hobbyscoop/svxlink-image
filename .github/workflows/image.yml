@@ -54,7 +54,7 @@ jobs:
         with:
           push: true
           load: true
-          tags: ghcr.io/hobbyscoop/svxlink-build:latest
+          tags: ghcr.io/hobbyscoop/svxlink-build:${{ inputs.docker_tag }}
           context: .
           platforms: linux/arm64
           file: Dockerfile.build
