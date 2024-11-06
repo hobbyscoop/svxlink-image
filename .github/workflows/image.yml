@@ -50,9 +50,7 @@ jobs:
 
       - name: Get package svxlink
         run: |
-          docker run --rm -v $PWD:/build --platform linux/arm64 --entrypoint sudo ghcr.io/hobbyscoop/svxlink-build:latest /bin/bash -c "cp /root/build/*.deb /build"
-          ls -ltr *.deb || true
-          find . -name "*.deb" || true
+          docker run --rm -v $PWD:/build --platform linux/arm64 --entrypoint /bin/bash ghcr.io/hobbyscoop/svxlink-build:latest -c "cp build/*.deb /build"
 
       - name: Build final image
         uses: docker/build-push-action@v6
