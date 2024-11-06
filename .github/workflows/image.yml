@@ -30,8 +30,7 @@ jobs:
       - name: Fetch svxlink
         run: |
           git clone https://github.com/sm0svx/svxlink.git
-          cd svxlink
-          git checkout ${{ inputs.git_hash }}
+          # we stay on master here, as older versions don't have an up to date ubuntu image in the builder, with arm64 support
 
       - name: Build builder image
         uses: docker/build-push-action@v6
@@ -44,6 +43,11 @@ jobs:
           file: svxlink/docker/ubuntu-build/Dockerfile
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache,mode=max
+
+      - name: Checkout tag
+        run: |
+          cd svxlink
+          git checkout ${{ inputs.git_hash }}
 
       - name: Build svxlink
         uses: docker/build-push-action@v6
