@@ -58,8 +58,8 @@ jobs:
           context: .
           platforms: linux/arm64
           file: Dockerfile.build
-          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-build:buildcache
-          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-build:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-build:buildcache-${{ inputs.docker_tag }}
+          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-build:buildcache-${{ inputs.docker_tag }},mode=max
 
       - name: Get package svxlink
         run: |
@@ -73,5 +73,5 @@ jobs:
           file: Dockerfile.final
           context: .
           platforms: linux/arm64
-          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache
-          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }}
+          cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }},mode=max
