@@ -38,6 +38,8 @@ jobs:
 
       - name: Build svxlink
         run: |
+          ls -ltr *.deb
+          find . -name "*.deb"
           docker run --rm -v $PWD:/build --platform linux/arm64 --entrypoint sudo builder-image /bin/bash -c "apt update; apt install -y libssl-dev; GIT_URL=https://github.com/sm0svx/svxlink /home/svxlink/build-svxlink.sh; cp /root/build/*.deb /build"
 
       - name: Build final image
