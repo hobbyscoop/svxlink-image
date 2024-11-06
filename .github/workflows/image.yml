@@ -1,8 +1,15 @@
 name: image build and upload
 on:
-  #schedule:
-  #  - cron: "0 0 * * *"
   workflow_dispatch:
+    inputs:
+      git_hash:
+        description: git hash, tag or branch of svxlink repo to build for
+        required: false
+        default: master
+      docker_tag:
+        description: docker tag to generate the image with
+        required: true
+
 
 jobs:
   build:
@@ -23,6 +30,8 @@ jobs:
       - name: Fetch svxlink
         run: |
           git clone https://github.com/sm0svx/svxlink.git
+          cd svxlink
+          git checkout ${{ inputs.git_hash }}
 
       - name: Build builder image
         uses: docker/build-push-action@v6
@@ -56,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ghcr.io/hobbyscoop/svxlink:latest
+          tags: ghcr.io/hobbyscoop/svxlink:${{ inputs.docker_tag }}
           file: Dockerfile.final
           context: .
           platforms: linux/arm64
