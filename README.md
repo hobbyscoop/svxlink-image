@@ -7,5 +7,5 @@ When the pipeline is finished, the docker image can be found [here](https://gith
 
 | version | commit |
 | --- | --- |
-| remotetrx v1.2.0.99.4 | 03034a4fc828b80e1b1477e930cbc50b7f446f80 |
+| remotetrx v1.2.0.99.4 | c951c716baf509ba2ab4d3c8bf6eb5f872081ad6 |
 
