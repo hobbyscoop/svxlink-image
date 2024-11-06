@@ -1,6 +1,7 @@
 # svxlink-image
 Builds a docker image for svxlink and included tools (remotetrx).
-Run the action `build` and specify the git tag/branch/hash of the svxlink repo to build for, and what to tag the docker image with.
+Run the action [Image build and upload](https://github.com/hobbyscoop/svxlink-image/actions/workflows/image.yml)
+ and specify the git tag/branch/hash of the svxlink repo to build for, and what to tag the docker image with.
 When the pipeline is finished, the docker image can be found [here](https://github.com/hobbyscoop/svxlink-image/pkgs/container/svxlink).
 
 
