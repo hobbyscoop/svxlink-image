@@ -8,7 +8,7 @@ on:
         default: master
       docker_tag:
         description: docker tag to generate the image with
-        required: true
+        default: latest
 
 
 jobs:
