@@ -3,7 +3,7 @@ ARG GIT_BRANCH=master
 ENV GIT_BRANCH=$GIT_BRANCH
 ADD svxlink /home/svxlink/svxlink
 RUN sudo chown -R svxlink: /home/svxlink/svxlink
-RUN test "$GIT_BRANCH" -ne "master" && (cd svxlink; git checkout $GIT_BRANCH; git tag $GIT_BRANCH; git branch origin/$GIT_BRANCH) # the build script tries a reset to this branch, but we want a commit has to work as well
+RUN test "$GIT_BRANCH" = "master" || (cd svxlink; git checkout $GIT_BRANCH; git tag $GIT_BRANCH; git branch origin/$GIT_BRANCH) # the build script tries a reset to this branch, but we want a commit has to work as well 
 RUN sudo apt update && sudo apt install -y libssl-dev # https://github.com/sm0svx/svxlink/pull/682
 #RUN /home/svxlink/build-svxlink.sh
 
