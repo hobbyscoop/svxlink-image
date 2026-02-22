@@ -39,7 +39,7 @@ jobs:
           load: true
           tags: ghcr.io/hobbyscoop/svxlink-builder-image:latest
           context: svxlink/docker/ubuntu-build/
-          platforms: linux/arm64
+          platforms: linux/arm64,linux/amd64
           file: svxlink/docker/ubuntu-build/Dockerfile
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache,mode=max
@@ -53,7 +53,7 @@ jobs:
           build-args: |
              GIT_BRANCH=${{ inputs.git_hash }}
           context: .
-          platforms: linux/arm64
+          platforms: linux/arm64,linux/amd64
           file: Dockerfile.build
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }}
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }},mode=max
