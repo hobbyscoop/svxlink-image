@@ -36,7 +36,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          load: true
           tags: ghcr.io/hobbyscoop/svxlink-builder-image:latest
           context: svxlink/docker/ubuntu-build/
           platforms: linux/arm64,linux/amd64
@@ -48,7 +47,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          load: true
           tags: ghcr.io/hobbyscoop/svxlink:${{ inputs.docker_tag }}
           build-args: |
              GIT_BRANCH=${{ inputs.git_hash }}
@@ -57,4 +55,3 @@ jobs:
           file: Dockerfile.build
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }}
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }},mode=max
-
