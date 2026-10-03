@@ -30,7 +30,7 @@ jobs:
       - name: Fetch svxlink
         run: |
           git clone https://github.com/sm0svx/svxlink.git
-          # we stay on master here, as older versions don't have an up to date ubuntu image in the builder, with arm64 support
+          # Stay on master for the up-to-date multi-architecture Ubuntu builder.
 
       - name: Build builder image
         uses: docker/build-push-action@v6
@@ -38,7 +38,7 @@ jobs:
           push: true
           tags: ghcr.io/hobbyscoop/svxlink-builder-image:latest
           context: svxlink/docker/ubuntu-build/
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/arm64,linux/amd64,linux/arm/v7
           file: svxlink/docker/ubuntu-build/Dockerfile
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink-builder-image:buildcache,mode=max
@@ -51,7 +51,7 @@ jobs:
           build-args: |
              GIT_BRANCH=${{ inputs.git_hash }}
           context: .
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/arm64,linux/amd64,linux/arm/v7
           file: Dockerfile.build
           cache-from: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }}
           cache-to: type=registry,ref=ghcr.io/hobbyscoop/svxlink:buildcache-${{ inputs.docker_tag }},mode=max
