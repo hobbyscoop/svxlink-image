@@ -12,6 +12,7 @@ RUN sudo apt update && sudo apt install -y libssl-dev # https://github.com/sm0sv
 RUN mkdir build
 WORKDIR build
 RUN cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
       -DCMAKE_INSTALL_SYSCONFDIR=/etc \
       -DCMAKE_INSTALL_LOCALSTATEDIR=/var \
       -DCPACK_GENERATOR=DEB \
@@ -22,4 +23,3 @@ RUN make -j2
 RUN rm -f *.deb
 RUN make package
 RUN sudo dpkg -i *.deb
-
